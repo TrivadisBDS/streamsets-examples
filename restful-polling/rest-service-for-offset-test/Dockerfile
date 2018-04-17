@@ -12,6 +12,6 @@ mv apache-maven-$MAVEN_VERSION /usr/lib/mvn
 
 #RUN mvn clean install -DskipTests
 
-ADD ./deploy/rest-service-for-offset-test-1.0-SNAPSHOT.jar /rest-service-for-offset-test.jar
+ADD ./deploy/rest-service-for-offset-test-1.0.0.jar /rest-service-for-offset-test.jar
 RUN sh -c 'touch /rest-service-for-offset-test.jar'
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/rest-service-for-offset-test.jar"]
