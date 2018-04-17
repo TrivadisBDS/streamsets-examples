@@ -2,10 +2,10 @@
   "pipelineConfig" : {
     "schemaVersion" : 5,
     "version" : 8,
-    "pipelineId" : "ProductPoller656788fe-91a0-4a12-8e23-119e0060c7ba",
+    "pipelineId" : "ProductPollerc4f1fd19-70e3-4b7c-9ff5-559be380424f",
     "title" : "ProductPoller",
     "description" : "",
-    "uuid" : "2d345dc3-f962-4153-bac7-af8f4abbbf31",
+    "uuid" : "ef0cb9fd-558d-4d31-b088-56b156f8c2e0",
     "configuration" : [ {
       "name" : "executionMode",
       "value" : "STANDALONE"
@@ -38,10 +38,7 @@
       "value" : [ ]
     }, {
       "name" : "constants",
-      "value" : [ {
-        "key" : "DOCKER_HOST_IP",
-        "value" : "192.168.69.134"
-      } ]
+      "value" : [ ]
     }, {
       "name" : "badRecordsHandling",
       "value" : "streamsets-datacollector-basic-lib::com_streamsets_pipeline_stage_destination_devnull_ToErrorNullDTarget::1"
@@ -308,7 +305,7 @@
         "value" : false
       }, {
         "name" : "conf.resourceUrl",
-        "value" : "http://${DOCKER_HOST_IP}:18080/api/products?offset=${offset:get('RestPoller', 0)}&offsetSemantic=greater"
+        "value" : "http://restservice:8080/api/products?offset=${offset:get('RestPoller', 0)}&offsetSemantic=greater"
       }, {
         "name" : "conf.headers",
         "value" : [ ]
@@ -581,7 +578,7 @@
         "value" : "/*\n * Available objects:\n *   state: A Map<String, Object> that is preserved between invocations of this script.\n *          Useful for caching bits of data, e.g. counters.\n *\n *   log.<level>(msg, obj...): Use instead of println to send log messages to the log4j log\n *                             instead of stdout.\n *                             loglevel is any log4j level: e.g. info, warn, error, trace.\n *   sdcFunctions.getFieldNull(Record, 'field path'): Receive a constant defined above \n *                          to check if the field is typed field with value null\n *   sdcFunctions.createMap(boolean listMap): Create a map for use as a field in a record. \n *                          Pass true to this function to create a list map (ordered map)\n *   sdcFunctions.pipelineParameters(): Map with pipeline runtime parameters.\n */\n\n// state['connection'] = new Connection().open();"
       }, {
         "name" : "script",
-        "value" : "import com.streamsets.el.example.OffsetEL\n\n//System.out.println(sdcFunctions.pipelineParameters()['OffsetFileName'])\n\nInteger lastId = -1\n // Sample Groovy code\nfor (record in records) {\n  try {\n    output.write(record)\n\tlastId = Integer.valueOf(record.value['productId'])\n  } catch (e) {\n    // Write a record to the error pipeline\n    log.error(e.toString(), e)\n    error.write(record, e.toString())\n  }\n}\n\nif (records.size() > 0 && lastId >= 0) {\n  System.out.println(\"commiting offset: \" + lastId)\n  OffsetEL.prepare('RestPoller', lastId)\n}"
+        "value" : "import com.trivadis.streamsets.el.offset.OffsetEL\n\n//System.out.println(sdcFunctions.pipelineParameters()['OffsetFileName'])\n\nInteger lastId = -1\n // Sample Groovy code\nfor (record in records) {\n  try {\n    output.write(record)\n\tlastId = Integer.valueOf(record.value['productId'])\n  } catch (e) {\n    // Write a record to the error pipeline\n    log.error(e.toString(), e)\n    error.write(record, e.toString())\n  }\n}\n\nif (records.size() > 0 && lastId >= 0) {\n  System.out.println(\"commiting offset: \" + lastId)\n  OffsetEL.prepare('RestPoller', lastId)\n}"
       }, {
         "name" : "destroyScript",
         "value" : "/*\n * Available objects:\n *   state: A Map<String, Object> that is preserved between invocations of this script.\n *          Useful for caching bits of data, e.g. counters.\n *\n *   log.<level>(msg, obj...): Use instead of println to send log messages to the log4j log\n *                             instead of stdout.\n *                             loglevel is any log4j level: e.g. info, warn, error, trace.\n *   sdcFunctions.getFieldNull(Record, 'field path'): Receive a constant defined above \n *                          to check if the field is typed field with value null\n *   sdcFunctions.createMap(boolean listMap): Create a map for use as a field in a record. \n *                          Pass true to this function to create a list map (ordered map)\n *   sdcFunctions.createEvent(String type, int version): Creates a new event.\n *                          Create new empty event with standard headers.\n *   sdcFunctions.toEvent(Record): Send event to event stream\n *                          Only events created with sdcFunctions.createEvent are supported.\n *   sdcFunctions.pipelineParameters(): Map with pipeline runtime parameters.\n *\n */\n\n// state?.connection.close()"
@@ -628,7 +625,7 @@
         "value" : "OTHER"
       }, {
         "name" : "s3TargetConfigBean.s3Config.endpoint",
-        "value" : "http://${DOCKER_HOST_IP}:4572"
+        "value" : "http://localstack:4572"
       }, {
         "name" : "s3TargetConfigBean.s3Config.commonPrefix",
         "value" : null
@@ -907,22 +904,22 @@
       "services" : [ ]
     },
     "info" : {
-      "pipelineId" : "ProductPoller656788fe-91a0-4a12-8e23-119e0060c7ba",
+      "pipelineId" : "ProductPollerc4f1fd19-70e3-4b7c-9ff5-559be380424f",
       "title" : "ProductPoller",
       "description" : "",
-      "created" : 1523958171929,
-      "lastModified" : 1523959011819,
+      "created" : 1523973776585,
+      "lastModified" : 1523974422126,
       "creator" : "admin",
       "lastModifier" : "admin",
       "lastRev" : "0",
-      "uuid" : "2d345dc3-f962-4153-bac7-af8f4abbbf31",
+      "uuid" : "ef0cb9fd-558d-4d31-b088-56b156f8c2e0",
       "valid" : true,
       "metadata" : {
         "labels" : [ ]
       },
-      "name" : "ProductPoller656788fe-91a0-4a12-8e23-119e0060c7ba",
+      "name" : "ProductPollerc4f1fd19-70e3-4b7c-9ff5-559be380424f",
       "sdcVersion" : "3.1.3.0",
-      "sdcId" : "b66a23b8-420c-11e8-95d2-81c854aa0b93"
+      "sdcId" : "aaa79239-4247-11e8-867c-e7fe852c116f"
     },
     "metadata" : {
       "labels" : [ ]
@@ -966,9 +963,9 @@
     } ],
     "valid" : true,
     "issues" : {
-      "stageIssues" : { },
+      "issueCount" : 0,
       "pipelineIssues" : [ ],
-      "issueCount" : 0
+      "stageIssues" : { }
     },
     "previewable" : true
   },
@@ -1033,7 +1030,7 @@
     } ],
     "dataRuleDefinitions" : [ ],
     "driftRuleDefinitions" : [ ],
-    "uuid" : "90e213eb-3401-438e-97b9-3bde9653ecfe",
+    "uuid" : "c3d9ecb2-d280-441e-ad33-2ba30dc50658",
     "configuration" : [ {
       "name" : "emailIDs",
       "value" : [ ]
