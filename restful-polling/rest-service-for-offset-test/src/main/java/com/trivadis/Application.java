@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
 
-@ComponentScan("com.soaringclouds.product")
+@ComponentScan("com.trivadis.restapi")
 //@EnableConfigurationProperties(StorageProperties.class)
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
