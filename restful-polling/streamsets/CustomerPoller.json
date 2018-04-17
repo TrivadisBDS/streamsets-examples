@@ -2,10 +2,10 @@
   "pipelineConfig" : {
     "schemaVersion" : 5,
     "version" : 8,
-    "pipelineId" : "CustomerPoller15f93e26-61d1-4109-9cee-c028788e1567",
+    "pipelineId" : "CustomerPoller56f1a7e4-8e81-4160-8f8a-8ec63c691b7f",
     "title" : "CustomerPoller",
     "description" : "",
-    "uuid" : "c8ec0542-c5c5-4d58-8a3e-912cbdd34172",
+    "uuid" : "9bfe741a-d4a1-46f5-bab9-07179af045e7",
     "configuration" : [ {
       "name" : "executionMode",
       "value" : "STANDALONE"
@@ -38,7 +38,10 @@
       "value" : [ ]
     }, {
       "name" : "constants",
-      "value" : [ ]
+      "value" : [ {
+        "key" : "OFFSET_KEY",
+        "value" : "CustomerPollerV1"
+      } ]
     }, {
       "name" : "badRecordsHandling",
       "value" : "streamsets-datacollector-basic-lib::com_streamsets_pipeline_stage_destination_devnull_ToErrorNullDTarget::1"
@@ -305,7 +308,7 @@
         "value" : false
       }, {
         "name" : "conf.resourceUrl",
-        "value" : "http://restservice:8080/api/customers?offset=${offset:get('CustomerPoller',0)}&offsetSemantic=greater"
+        "value" : "http://restservice:8080/api/customers?offset=${offset:get(OFFSET_KEY,0)}&offsetSemantic=greater"
       }, {
         "name" : "conf.headers",
         "value" : [ ]
@@ -578,7 +581,7 @@
         "value" : "/*\n * Available objects:\n *   state: A Map<String, Object> that is preserved between invocations of this script.\n *          Useful for caching bits of data, e.g. counters.\n *\n *   log.<level>(msg, obj...): Use instead of println to send log messages to the log4j log\n *                             instead of stdout.\n *                             loglevel is any log4j level: e.g. info, warn, error, trace.\n *   sdcFunctions.getFieldNull(Record, 'field path'): Receive a constant defined above \n *                          to check if the field is typed field with value null\n *   sdcFunctions.createMap(boolean listMap): Create a map for use as a field in a record. \n *                          Pass true to this function to create a list map (ordered map)\n *   sdcFunctions.pipelineParameters(): Map with pipeline runtime parameters.\n */\n\n// state['connection'] = new Connection().open();"
       }, {
         "name" : "script",
-        "value" : "import com.trivadis.streamsets.el.offset.OffsetEL\n\n//System.out.println(sdcFunctions.pipelineParameters()['OffsetFileName'])\n\nLong lastOffset = 0\n // Sample Groovy code\nfor (record in records) {\n  try {\n    output.write(record)\n\tlastOffset = record.value['modifiedAt']\n  } catch (e) {\n    // Write a record to the error pipeline\n    log.error(e.toString(), e)\n    error.write(record, e.toString())\n  }\n}\n\nif (records.size() > 0 && lastOffset != null) {\n  System.out.println(\"commiting offset: \" + lastOffset)\n  OffsetEL.prepare('CustomerPoller', lastOffset)\n}"
+        "value" : "import com.trivadis.streamsets.el.offset.OffsetEL\n\n//System.out.println(sdcFunctions.pipelineParameters()['OffsetFileName'])\n\nLong lastOffset = 0\n // Sample Groovy code\nfor (record in records) {\n  try {\n    output.write(record)\n\tlastOffset = record.value['modifiedAt']\n  } catch (e) {\n    // Write a record to the error pipeline\n    log.error(e.toString(), e)\n    error.write(record, e.toString())\n  }\n}\n\nif (records.size() > 0 && lastOffset != null) {\n  System.out.println(\"commiting offset: \" + lastOffset)\n  OffsetEL.prepare(sdcFunctions.pipelineParameters()['OFFSET_KEY'], lastOffset)\n}"
       }, {
         "name" : "destroyScript",
         "value" : "/*\n * Available objects:\n *   state: A Map<String, Object> that is preserved between invocations of this script.\n *          Useful for caching bits of data, e.g. counters.\n *\n *   log.<level>(msg, obj...): Use instead of println to send log messages to the log4j log\n *                             instead of stdout.\n *                             loglevel is any log4j level: e.g. info, warn, error, trace.\n *   sdcFunctions.getFieldNull(Record, 'field path'): Receive a constant defined above \n *                          to check if the field is typed field with value null\n *   sdcFunctions.createMap(boolean listMap): Create a map for use as a field in a record. \n *                          Pass true to this function to create a list map (ordered map)\n *   sdcFunctions.createEvent(String type, int version): Creates a new event.\n *                          Create new empty event with standard headers.\n *   sdcFunctions.toEvent(Record): Send event to event stream\n *                          Only events created with sdcFunctions.createEvent are supported.\n *   sdcFunctions.pipelineParameters(): Map with pipeline runtime parameters.\n *\n */\n\n// state?.connection.close()"
@@ -839,7 +842,7 @@
         "name" : "headerAttributeConfigs",
         "value" : [ {
           "attributeToSet" : "/offset",
-          "headerAttributeExpression" : "${offset:commit('CustomerPoller')}"
+          "headerAttributeExpression" : "${offset:commit(OFFSET_KEY)}"
         } ]
       }, {
         "name" : "fieldAttributeConfigs",
@@ -904,22 +907,22 @@
       "services" : [ ]
     },
     "info" : {
-      "pipelineId" : "CustomerPoller15f93e26-61d1-4109-9cee-c028788e1567",
+      "pipelineId" : "CustomerPoller56f1a7e4-8e81-4160-8f8a-8ec63c691b7f",
       "title" : "CustomerPoller",
       "description" : "",
-      "created" : 1523974021623,
-      "lastModified" : 1523974432746,
+      "created" : 1523976148486,
+      "lastModified" : 1523976215406,
       "creator" : "admin",
       "lastModifier" : "admin",
       "lastRev" : "0",
-      "uuid" : "c8ec0542-c5c5-4d58-8a3e-912cbdd34172",
+      "uuid" : "9bfe741a-d4a1-46f5-bab9-07179af045e7",
       "valid" : true,
       "metadata" : {
         "labels" : [ ]
       },
-      "name" : "CustomerPoller15f93e26-61d1-4109-9cee-c028788e1567",
+      "name" : "CustomerPoller56f1a7e4-8e81-4160-8f8a-8ec63c691b7f",
       "sdcVersion" : "3.1.3.0",
-      "sdcId" : "aaa79239-4247-11e8-867c-e7fe852c116f"
+      "sdcId" : "647b4d36-424c-11e8-8db1-2973ef1b0655"
     },
     "metadata" : {
       "labels" : [ ]
@@ -963,8 +966,8 @@
     } ],
     "valid" : true,
     "issues" : {
-      "issueCount" : 0,
       "pipelineIssues" : [ ],
+      "issueCount" : 0,
       "stageIssues" : { }
     },
     "previewable" : true
@@ -1030,7 +1033,7 @@
     } ],
     "dataRuleDefinitions" : [ ],
     "driftRuleDefinitions" : [ ],
-    "uuid" : "aafdbeac-f060-43f4-8493-4a7d9c58a377",
+    "uuid" : "882cb727-ca8e-4d62-9d31-a491cf41d49f",
     "configuration" : [ {
       "name" : "emailIDs",
       "value" : [ ]
