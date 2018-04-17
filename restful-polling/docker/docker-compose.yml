@@ -56,9 +56,15 @@ services:
     environment:
       SDC_OFFSET_DIRECTORY: '/data/custom-offsets'
     volumes:
-      - ./streamsets/data:/data
+      - ./streamsets/etc/sdc/sdc-security.policy:/etc/sdc/sdc-security.policy
+      - ./streamsets/libs-common-lib:/opt/streamsets-datacollector-3.1.3.0/libs-common-lib
     ports: 
       - "18630:18630"
+
+  restservice:
+    image: gschmutz/rest-service-for-offset-test:1.0.0
+    ports:
+      - "18080:8080"
 
   localstack:
     image: localstack/localstack
