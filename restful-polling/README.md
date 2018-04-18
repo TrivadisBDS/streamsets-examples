@@ -50,6 +50,7 @@ The offset-key is defined once as a pipeline parameter.
 
 ## Open issues
 
+* change sdc-security.policy to not have all priviledges
 * showcase pagination
 * showcase partitioning the REST calls
 * showcase starting data flow in a batch mode
